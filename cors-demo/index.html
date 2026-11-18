@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trips CORS Demo</title>
+</head>
+<body>
+  <button type="button" id="read">GET trips</button>
+  <button type="button" id="create">POST demo trip (preflight)</button>
+  <pre id="result" aria-live="polite">Click a button to send a cross-origin fetch request.</pre>
+  <script>
+    const output = document.getElementById('result');
+    const endpoint = 'http://localhost:3000/trips';
+
+    async function run(options) {
+      output.textContent = 'Requesting...';
+      try {
+        const response = await fetch(endpoint, { credentials: 'include', ...options });
+        const body = await response.json();
+        output.textContent = `HTTP ${response.status}\n${JSON.stringify(body, null, 2)}`;
+      } catch (error) {
+        output.textContent = 'Browser could not read the response.\n' +
+          error.message + '\n\nCheck the browser Console for details.';
+      }
+    }
+
+    document.getElementById('read').onclick = () => run({ method: 'GET' });
+    document.getElementById('create').onclick = () => run({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ destination: 'Cairo', country: 'Egypt', cost: 200 }),
+    });
+  </script>
+</body>
+</html>

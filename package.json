@@ -1,14 +1,31 @@
 {
-  "name": "lab5-users-trips-mvc",
+  "name": "web-backend-base",
   "version": "1.0.0",
-  "description": "Lab 5.1 Users API and Lab 5.2 Travel Agency API with Express MVC",
+  "description": "",
   "main": "index.js",
-  "type": "commonjs",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "engines": { "node": ">=20" },
-  "private": true,
-  "dependencies": { "express": "^5.3.0" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TKH-EH27/web-backend-base.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TKH-EH27/web-backend-base/issues"
+  },
+  "homepage": "https://github.com/TKH-EH27/web-backend-base#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.4",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.24.6"
+  }
 }

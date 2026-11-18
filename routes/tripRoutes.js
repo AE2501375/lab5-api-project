@@ -1,23 +1,22 @@
 const express = require('express');
-const createTripController = require('../controllers/tripController');
-const verifyAdmin = require('../middleware/verifyAdmin');
-const validateTrip = require('../middleware/validateTrip');
-const logRequest = require('../middleware/logRequest');
+const { 
+    createTrip,
+    retrieveAllTrips, 
+    retrieveTripById,
+    getLastViewedTrip,
+    getTripReviews, 
+    allTripsWithRatings 
+} = require('../controllers/tripController');
 
-function createTripRouter(tripModel) {
-  const router = express.Router();
-  const controller = createTripController(tripModel);
+const { verifyToken, verifyAdmin } = require('../middlewares/authMiddlewares');
 
-  router.use(logRequest);
+const tripRouter = express.Router();
 
-  router.get('/', controller.getAllTrips);
-  router.post('/compare', controller.compareTrips);
-  router.get('/:id', controller.getTripById);
-  router.post('/', verifyAdmin, validateTrip, controller.createTrip);
-  router.put('/:id', verifyAdmin, validateTrip, controller.updateTrip);
-  router.delete('/:id', verifyAdmin, controller.deleteTrip);
+tripRouter.get('/', verifyToken, retrieveAllTrips);
+tripRouter.get('/:id', verifyToken, retrieveTripById);
+tripRouter.get('/last-viewed', verifyToken, getLastViewedTrip);
+tripRouter.get('/reviews', verifyToken, getTripReviews);
+tripRouter.get('/ratings', verifyToken, allTripsWithRatings);
+tripRouter.post('/', verifyAdmin, createTrip);
 
-  return router;
-}
-
-module.exports = createTripRouter;
+module.exports = tripRouter;

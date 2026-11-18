@@ -1,33 +1,35 @@
 const express = require('express');
-const { createUserRouter } = require('./routes/userRouter');
-const createTripModel = require('./models/Trip');
-const createTripRouter = require('./routes/tripRoutes');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const { rateLimit } = require('express-rate-limit');
 
-function createApp() {
-  const app = express();
-  app.use(express.json());
+const userRouter = require('./routes/userRoutes');
+const authRouter = require('./routes/authRoutes');
+const tripRouter = require('./routes/tripRoutes');
 
-  app.use('/api/v1/users', createUserRouter());
-  const tripRouter = createTripRouter(createTripModel());
-  app.use('/trips', tripRouter);
-  app.use('/api/v1/trips', tripRouter);
+// Create an instance of the Express application
+const app = express(); 
 
-  app.use((req, res) => {
-    res.status(404).json({ message: 'Route not found' });
-  });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+});
 
-  app.use((err, req, res, next) => {
-    if (err.type === 'entity.parse.failed') {
-      return res.status(400).json({ message: 'Invalid JSON request body' });
-    }
-    if (err.type === 'entity.too.large') {
-      return res.status(413).json({ message: 'Request body too large' });
-    }
-    console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
-  });
-  return app;
-}
+// Use middleware to parse JSON data from request bodies
+app.use(express.json());
+app.use(cookieParser());
+app.use(limiter); // Apply rate limiting to all requests
+app.use(cors({
+  origin: 'http://127.0.0.1:30095/',
+  credentials: true,
+}));
 
-module.exports = createApp;
-module.exports.createApp = createApp;
+
+app.use('/users', userRouter);
+app.use('/auth', authRouter);
+app.use('/trips', tripRouter);
+
+
+module.exports = {
+  app,
+};
