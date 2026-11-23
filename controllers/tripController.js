@@ -64,7 +64,7 @@ const retrieveTripById = async (req, res) => {
         res.cookie('lastViewedTrip', String(id), {
             maxAge: 24 * 60 * 60 * 1000, // 1 ho
             httpOnly: true,
-            secure: true,
+            secure: false, // Set to true in production
             sameSite: 'lax'
         });
 

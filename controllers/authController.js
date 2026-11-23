@@ -79,7 +79,7 @@ const registerUser = async (req, res) => {
         // set token in cookie
         res.cookie('jwt', token, {
             httpOnly: true,
-            secure: true, 
+            secure: false, // Set to true in production
             sameSite: 'lax', // Adjust based on your needs
             maxAge: 60 * 60 * 1000 // 1 hour
         });
@@ -149,7 +149,7 @@ const loginUser = async (req, res) => {
         // Set token in cookie
         res.cookie('jwt', token, {
             httpOnly: true,
-            secure: true, 
+            secure: false, // Set to true in production
             sameSite: 'lax', 
             maxAge: 60 * 60 * 1000 // 1 hour
         });
@@ -171,7 +171,20 @@ const loginUser = async (req, res) => {
     }
 };
 
+const logoutUser = (req, res) => {
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: false, // Set to true in production
+        sameSite: 'lax'
+    });
+
+    return res.status(200).json({
+        message: 'User logged out successfully'
+    });
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 };
