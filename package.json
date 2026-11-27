@@ -1,31 +1,39 @@
 {
-  "name": "web-backend-base",
+  "name": "fixmyunit-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TKH-EH27/web-backend-base.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "FixMyUnit building maintenance tracker - Node.js/Express REST API (KH5041CMD Milestone 4)",
+  "main": "server.js",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/TKH-EH27/web-backend-base/issues"
+  "engines": {
+    "node": ">=20"
   },
-  "homepage": "https://github.com/TKH-EH27/web-backend-base#readme",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:setup": "node database/setup.js",
+    "db:reset": "node database/setup.js --reset",
+    "keys": "node scripts/generate-keys.js",
+    "test": "node --test --test-concurrency=1 tests/api.test.js"
+  },
+  "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
+    "argon2": "^0.45.2",
     "cors": "^2.8.6",
-    "dotenv": "^18.0.9",
+    "dotenv": "^18.0.10",
     "express": "^5.3.0",
-    "express-rate-limit": "^8.7.4",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.24.6"
+    "express-mysql-session": "^3.0.3",
+    "express-rate-limit": "^8.7.5",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "mysql2": "^3.24.6",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  },
+  "overrides": {
+    "express-mysql-session": {
+      "mysql2": "$mysql2"
+    }
   }
 }
